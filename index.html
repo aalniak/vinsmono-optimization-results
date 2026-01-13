@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VINS-Fusion Optimization Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .card h3 { margin: 0 0 10px 0; color: #2c3e50; }
+        .card .description { color: #7f8c8d; font-size: 12px; margin-bottom: 12px; line-height: 1.4; font-style: italic; border-left: 3px solid #3498db; padding-left: 10px; }
+        .card a { color: #3498db; text-decoration: none; font-weight: bold; }
+        .card a:hover { text-decoration: underline; }
+        .card .stat { color: #666; font-size: 14px; margin: 5px 0; }
+        .card .stat.rmse { color: #e74c3c; font-weight: bold; font-size: 15px; margin: 8px 0; }
+        .section { margin: 40px 0; }
+        .section h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .compare-section { background: #e8f4f8; padding: 20px; border-radius: 8px; }
+        .compare-button { display: block; text-align: center; padding: 20px 40px; background: linear-gradient(135deg, #3498db, #2980b9); color: white; text-decoration: none; font-size: 20px; font-weight: bold; border-radius: 10px; margin: 20px auto; max-width: 400px; box-shadow: 0 4px 15px rgba(52,152,219,0.4); transition: all 0.3s; }
+        .compare-button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(52,152,219,0.5); }
+        .detailed-stats { width: 100%; border-collapse: collapse; font-size: 12px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .detailed-stats th { background: #34495e; color: white; padding: 10px 8px; text-align: left; position: sticky; top: 0; }
+        .detailed-stats td { padding: 8px; border-bottom: 1px solid #eee; font-family: monospace; }
+        .detailed-stats tr:hover { background: #f5f9fc; }
+        .detailed-stats td:first-child { font-family: 'Segoe UI', Arial, sans-serif; font-weight: bold; }
+        .detailed-stats a { color: #3498db; text-decoration: none; }
+        .detailed-stats a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔧 VINS-Fusion Optimization Dashboard</h1>
+    <p class="subtitle">You may compare baselines with variants below!:</p>
+    
+    <a href="compare.html" class="compare-button">⚖️ Interactive Comparison Tool</a>
+    
+    <div class="section">
+        <h2>📊 Datasets (65)</h2>
+        <div class="card-grid">
+
+            <div class="card">
+                <h3><a href="P2001_base.html">P2001_base</a></h3>
+                <div class="description">P2001 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.8075</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 18.1ms</div>
+                <div class="stat">📉 Avg Reduction: 16.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_daac_depth_opt_w100.html">P2001_daac_depth_opt_w100</a></h3>
+                <div class="description">P2001 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.6491</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 19.2ms</div>
+                <div class="stat">📉 Avg Reduction: 15.5%</div>
+                <div class="stat">📏 Depth Factors: 81</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_daac_rgd_inv.html">P2001_daac_rgd_inv</a></h3>
+                <div class="description">P2001 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.1000</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.7ms</div>
+                <div class="stat">📉 Avg Reduction: 13.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_daac_rgd_metric.html">P2001_daac_rgd_metric</a></h3>
+                <div class="description">P2001 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.6036</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 18.0ms</div>
+                <div class="stat">📉 Avg Reduction: 14.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_gt_depth_opt_w100.html">P2001_gt_depth_opt_w100</a></h3>
+                <div class="description">P2001 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.4991</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 19.3ms</div>
+                <div class="stat">📉 Avg Reduction: 15.8%</div>
+                <div class="stat">📏 Depth Factors: 88</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_gt_depth_rgd_inverse.html">P2001_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2001 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.6037</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 18.6ms</div>
+                <div class="stat">📉 Avg Reduction: 15.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_gt_depth_rgd_metric.html">P2001_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2001 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.5358</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 18.3ms</div>
+                <div class="stat">📉 Avg Reduction: 16.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_gt_depth_sdi.html">P2001_gt_depth_sdi</a></h3>
+                <div class="description">P2001 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.8075</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 18.1ms</div>
+                <div class="stat">📉 Avg Reduction: 16.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2001_outlier_opt.html">P2001_outlier_opt</a></h3>
+                <div class="description">P2001 Outlier Optimization</div>
+                <div class="stat rmse">📐 RMSE: 0.4386</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.5ms</div>
+                <div class="stat">📉 Avg Reduction: 17.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_base.html">P2002_base</a></h3>
+                <div class="description">P2002 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.5019</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 18.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_daac_depth_opt_w100.html">P2002_daac_depth_opt_w100</a></h3>
+                <div class="description">P2002 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.4955</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.8ms</div>
+                <div class="stat">📉 Avg Reduction: 17.6%</div>
+                <div class="stat">📏 Depth Factors: 90</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_daac_rgd_inv.html">P2002_daac_rgd_inv</a></h3>
+                <div class="description">P2002 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.0005</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 16.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_daac_rgd_metric.html">P2002_daac_rgd_metric</a></h3>
+                <div class="description">P2002 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.4508</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.5ms</div>
+                <div class="stat">📉 Avg Reduction: 18.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_gt_depth_opt_w100.html">P2002_gt_depth_opt_w100</a></h3>
+                <div class="description">P2002 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.4594</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.8ms</div>
+                <div class="stat">📉 Avg Reduction: 17.6%</div>
+                <div class="stat">📏 Depth Factors: 107</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_gt_depth_rgd_inverse.html">P2002_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2002 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.9307</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 18.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_gt_depth_rgd_metric.html">P2002_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2002 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.7180</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 20.0%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2002_gt_depth_sdi.html">P2002_gt_depth_sdi</a></h3>
+                <div class="description">P2002 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.5019</div>
+                <div class="stat">📈 Frames: 628</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 18.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_base.html">P2003_base</a></h3>
+                <div class="description">P2003 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 1.2665</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.2ms</div>
+                <div class="stat">📉 Avg Reduction: 12.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_daac_depth_opt_w100.html">P2003_daac_depth_opt_w100</a></h3>
+                <div class="description">P2003 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.9607</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.8ms</div>
+                <div class="stat">📉 Avg Reduction: 11.3%</div>
+                <div class="stat">📏 Depth Factors: 81</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_daac_rgd_inv.html">P2003_daac_rgd_inv</a></h3>
+                <div class="description">P2003 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.2403</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.4ms</div>
+                <div class="stat">📉 Avg Reduction: 16.6%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_daac_rgd_metric.html">P2003_daac_rgd_metric</a></h3>
+                <div class="description">P2003 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.1829</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.3ms</div>
+                <div class="stat">📉 Avg Reduction: 17.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_gt_depth_opt_w100.html">P2003_gt_depth_opt_w100</a></h3>
+                <div class="description">P2003 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.7593</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.6ms</div>
+                <div class="stat">📉 Avg Reduction: 10.5%</div>
+                <div class="stat">📏 Depth Factors: 71</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_gt_depth_rgd_inverse.html">P2003_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2003 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.5470</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.3ms</div>
+                <div class="stat">📉 Avg Reduction: 16.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_gt_depth_rgd_metric.html">P2003_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2003 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.2680</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.6ms</div>
+                <div class="stat">📉 Avg Reduction: 12.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2003_gt_depth_sdi.html">P2003_gt_depth_sdi</a></h3>
+                <div class="description">P2003 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 1.2665</div>
+                <div class="stat">📈 Frames: 635</div>
+                <div class="stat">⏱️ Avg Solver: 18.3ms</div>
+                <div class="stat">📉 Avg Reduction: 12.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_base.html">P2004_base</a></h3>
+                <div class="description">P2004 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.3764</div>
+                <div class="stat">📈 Frames: 626</div>
+                <div class="stat">⏱️ Avg Solver: 17.2ms</div>
+                <div class="stat">📉 Avg Reduction: 32.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_daac_depth_opt_w100.html">P2004_daac_depth_opt_w100</a></h3>
+                <div class="description">P2004 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.3704</div>
+                <div class="stat">📈 Frames: 625</div>
+                <div class="stat">⏱️ Avg Solver: 17.9ms</div>
+                <div class="stat">📉 Avg Reduction: 33.8%</div>
+                <div class="stat">📏 Depth Factors: 98</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_daac_rgd_inv.html">P2004_daac_rgd_inv</a></h3>
+                <div class="description">P2004 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 2.0651</div>
+                <div class="stat">📈 Frames: 626</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 42.3%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_daac_rgd_metric.html">P2004_daac_rgd_metric</a></h3>
+                <div class="description">P2004 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.5665</div>
+                <div class="stat">📈 Frames: 626</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 31.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_gt_depth_opt_w100.html">P2004_gt_depth_opt_w100</a></h3>
+                <div class="description">P2004 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.4471</div>
+                <div class="stat">📈 Frames: 625</div>
+                <div class="stat">⏱️ Avg Solver: 17.9ms</div>
+                <div class="stat">📉 Avg Reduction: 32.0%</div>
+                <div class="stat">📏 Depth Factors: 117</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_gt_depth_rgd_inverse.html">P2004_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2004 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.4256</div>
+                <div class="stat">📈 Frames: 626</div>
+                <div class="stat">⏱️ Avg Solver: 17.4ms</div>
+                <div class="stat">📉 Avg Reduction: 34.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_gt_depth_rgd_metric.html">P2004_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2004 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.1425</div>
+                <div class="stat">📈 Frames: 536</div>
+                <div class="stat">⏱️ Avg Solver: 16.5ms</div>
+                <div class="stat">📉 Avg Reduction: 25.3%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2004_gt_depth_sdi.html">P2004_gt_depth_sdi</a></h3>
+                <div class="description">P2004 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.3764</div>
+                <div class="stat">📈 Frames: 626</div>
+                <div class="stat">⏱️ Avg Solver: 17.3ms</div>
+                <div class="stat">📉 Avg Reduction: 32.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_base.html">P2005_base</a></h3>
+                <div class="description">P2005 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.3745</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 15.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_daac_depth_opt_w100.html">P2005_daac_depth_opt_w100</a></h3>
+                <div class="description">P2005 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.2085</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.8ms</div>
+                <div class="stat">📉 Avg Reduction: 18.8%</div>
+                <div class="stat">📏 Depth Factors: 97</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_daac_rgd_inv.html">P2005_daac_rgd_inv</a></h3>
+                <div class="description">P2005 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.5372</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 16.7ms</div>
+                <div class="stat">📉 Avg Reduction: 19.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_daac_rgd_metric.html">P2005_daac_rgd_metric</a></h3>
+                <div class="description">P2005 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.8400</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 16.8ms</div>
+                <div class="stat">📉 Avg Reduction: 19.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_gt_depth_opt_w100.html">P2005_gt_depth_opt_w100</a></h3>
+                <div class="description">P2005 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.1606</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 21.0%</div>
+                <div class="stat">📏 Depth Factors: 97</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_gt_depth_rgd_inverse.html">P2005_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2005 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.4822</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 21.2%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_gt_depth_rgd_metric.html">P2005_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2005 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.3265</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 19.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2005_gt_depth_sdi.html">P2005_gt_depth_sdi</a></h3>
+                <div class="description">P2005 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.3745</div>
+                <div class="stat">📈 Frames: 631</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 15.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_base.html">P2006_base</a></h3>
+                <div class="description">P2006 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.9470</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.8ms</div>
+                <div class="stat">📉 Avg Reduction: 14.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_daac_depth_opt_w100.html">P2006_daac_depth_opt_w100</a></h3>
+                <div class="description">P2006 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.4236</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 14.4%</div>
+                <div class="stat">📏 Depth Factors: 93</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_daac_rgd_inv.html">P2006_daac_rgd_inv</a></h3>
+                <div class="description">P2006 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.8664</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.5ms</div>
+                <div class="stat">📉 Avg Reduction: 15.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_daac_rgd_metric.html">P2006_daac_rgd_metric</a></h3>
+                <div class="description">P2006 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.6297</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.4ms</div>
+                <div class="stat">📉 Avg Reduction: 16.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_gt_depth_opt_w100.html">P2006_gt_depth_opt_w100</a></h3>
+                <div class="description">P2006 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.5782</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 14.1%</div>
+                <div class="stat">📏 Depth Factors: 115</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_gt_depth_rgd_inverse.html">P2006_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2006 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.2169</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.1ms</div>
+                <div class="stat">📉 Avg Reduction: 15.2%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_gt_depth_rgd_metric.html">P2006_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2006 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.6107</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.4ms</div>
+                <div class="stat">📉 Avg Reduction: 15.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2006_gt_depth_sdi.html">P2006_gt_depth_sdi</a></h3>
+                <div class="description">P2006 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.9470</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.6ms</div>
+                <div class="stat">📉 Avg Reduction: 14.8%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_base.html">P2007_base</a></h3>
+                <div class="description">P2007 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.2297</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 5.7ms</div>
+                <div class="stat">📉 Avg Reduction: 21.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_daac_depth_opt_w100.html">P2007_daac_depth_opt_w100</a></h3>
+                <div class="description">P2007 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.2338</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 18.4ms</div>
+                <div class="stat">📉 Avg Reduction: 17.0%</div>
+                <div class="stat">📏 Depth Factors: 97</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_daac_rgd_inv.html">P2007_daac_rgd_inv</a></h3>
+                <div class="description">P2007 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.3185</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 17.0ms</div>
+                <div class="stat">📉 Avg Reduction: 22.1%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_daac_rgd_metric.html">P2007_daac_rgd_metric</a></h3>
+                <div class="description">P2007 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.1568</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 17.6ms</div>
+                <div class="stat">📉 Avg Reduction: 18.4%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_gt_depth_opt_w100.html">P2007_gt_depth_opt_w100</a></h3>
+                <div class="description">P2007 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.1974</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 18.4ms</div>
+                <div class="stat">📉 Avg Reduction: 15.5%</div>
+                <div class="stat">📏 Depth Factors: 129</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_gt_depth_rgd_inverse.html">P2007_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2007 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.4833</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 17.7ms</div>
+                <div class="stat">📉 Avg Reduction: 19.0%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_gt_depth_rgd_metric.html">P2007_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2007 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.2278</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 17.5ms</div>
+                <div class="stat">📉 Avg Reduction: 16.6%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2007_gt_depth_sdi.html">P2007_gt_depth_sdi</a></h3>
+                <div class="description">P2007 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.2297</div>
+                <div class="stat">📈 Frames: 623</div>
+                <div class="stat">⏱️ Avg Solver: 17.8ms</div>
+                <div class="stat">📉 Avg Reduction: 20.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_base.html">P2008_base</a></h3>
+                <div class="description">P2008 Baseline Diagnostics</div>
+                <div class="stat rmse">📐 RMSE: 0.8366</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.6ms</div>
+                <div class="stat">📉 Avg Reduction: 26.9%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_daac_depth_opt_w100.html">P2008_daac_depth_opt_w100</a></h3>
+                <div class="description">P2008 DAAC Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 1.0106</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.1ms</div>
+                <div class="stat">📉 Avg Reduction: 24.5%</div>
+                <div class="stat">📏 Depth Factors: 83</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_daac_rgd_inv.html">P2008_daac_rgd_inv</a></h3>
+                <div class="description">P2008 DAAC RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.4941</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.4ms</div>
+                <div class="stat">📉 Avg Reduction: 27.7%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_daac_rgd_metric.html">P2008_daac_rgd_metric</a></h3>
+                <div class="description">P2008 DAAC RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.6979</div>
+                <div class="stat">📈 Frames: 582</div>
+                <div class="stat">⏱️ Avg Solver: 15.8ms</div>
+                <div class="stat">📉 Avg Reduction: 26.9%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_gt_depth_opt_w100.html">P2008_gt_depth_opt_w100</a></h3>
+                <div class="description">P2008 GT Depth into Optimization with Weight=100</div>
+                <div class="stat rmse">📐 RMSE: 0.9338</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 17.2ms</div>
+                <div class="stat">📉 Avg Reduction: 25.6%</div>
+                <div class="stat">📏 Depth Factors: 105</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_gt_depth_rgd_inverse.html">P2008_gt_depth_rgd_inverse</a></h3>
+                <div class="description">P2008 GT Depth RGD with Log-scale Inverse Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 0.6230</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.5ms</div>
+                <div class="stat">📉 Avg Reduction: 24.5%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_gt_depth_rgd_metric.html">P2008_gt_depth_rgd_metric</a></h3>
+                <div class="description">P2008 GT Depth RGD with Log-scale Metric Depth Visualization (15% Depth + 85% Image)</div>
+                <div class="stat rmse">📐 RMSE: 1.0038</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.5ms</div>
+                <div class="stat">📉 Avg Reduction: 23.9%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+            <div class="card">
+                <h3><a href="P2008_gt_depth_sdi.html">P2008_gt_depth_sdi</a></h3>
+                <div class="description">P2008 GT Depth Smart Depth Initialization (spoiler: had no effect)</div>
+                <div class="stat rmse">📐 RMSE: 0.8366</div>
+                <div class="stat">📈 Frames: 634</div>
+                <div class="stat">⏱️ Avg Solver: 16.7ms</div>
+                <div class="stat">📉 Avg Reduction: 26.9%</div>
+                <div class="stat">📏 Depth Factors: 0</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Statistics</h2>
+        <p style="color: #666; margin-bottom: 20px;">Comprehensive statistics for all datasets. Cost values are medians (robust to outliers), reductions are averages.</p>
+        <div style="overflow-x: auto;">
+            <table class="detailed-stats">
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Frames</th>
+                        <th>Solver (ms)</th>
+                        <th>Iterations</th>
+                        <th>Total Init</th>
+                        <th>Total Final</th>
+                        <th>Total Red %</th>
+                        <th>Visual Init</th>
+                        <th>Visual Final</th>
+                        <th>Visual Red %</th>
+                        <th>IMU Init</th>
+                        <th>IMU Final</th>
+                        <th>Depth Factors</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="P2001_base.html">P2001_base</a></td>
+                        <td>634</td>
+                        <td>18.1</td>
+                        <td>6.1</td>
+                        <td>3.92e+02</td>
+                        <td>3.29e+02</td>
+                        <td>16.1%</td>
+                        <td>2.69e+02</td>
+                        <td>2.37e+02</td>
+                        <td>16.6%</td>
+                        <td>4.47e+00</td>
+                        <td>4.75e+00</td>
+                        <td>0</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_daac_depth_opt_w100.html">P2001_daac_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>19.2</td>
+                        <td>6.4</td>
+                        <td>4.12e+02</td>
+                        <td>3.52e+02</td>
+                        <td>15.5%</td>
+                        <td>2.70e+02</td>
+                        <td>2.39e+02</td>
+                        <td>16.0%</td>
+                        <td>4.51e+00</td>
+                        <td>4.71e+00</td>
+                        <td>81</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_daac_rgd_inv.html">P2001_daac_rgd_inv</a></td>
+                        <td>634</td>
+                        <td>17.7</td>
+                        <td>6.0</td>
+                        <td>3.94e+02</td>
+                        <td>3.35e+02</td>
+                        <td>13.1%</td>
+                        <td>2.61e+02</td>
+                        <td>2.31e+02</td>
+                        <td>16.0%</td>
+                        <td>4.49e+00</td>
+                        <td>4.81e+00</td>
+                        <td>0</td>
+                        <td>179</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_daac_rgd_metric.html">P2001_daac_rgd_metric</a></td>
+                        <td>634</td>
+                        <td>18.0</td>
+                        <td>6.1</td>
+                        <td>4.31e+02</td>
+                        <td>3.58e+02</td>
+                        <td>14.1%</td>
+                        <td>2.67e+02</td>
+                        <td>2.32e+02</td>
+                        <td>16.6%</td>
+                        <td>4.43e+00</td>
+                        <td>4.71e+00</td>
+                        <td>0</td>
+                        <td>179</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_gt_depth_opt_w100.html">P2001_gt_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>19.3</td>
+                        <td>6.5</td>
+                        <td>4.10e+02</td>
+                        <td>3.47e+02</td>
+                        <td>15.8%</td>
+                        <td>2.71e+02</td>
+                        <td>2.40e+02</td>
+                        <td>16.6%</td>
+                        <td>4.24e+00</td>
+                        <td>4.55e+00</td>
+                        <td>88</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_gt_depth_rgd_inverse.html">P2001_gt_depth_rgd_inverse</a></td>
+                        <td>634</td>
+                        <td>18.6</td>
+                        <td>6.3</td>
+                        <td>3.98e+02</td>
+                        <td>3.38e+02</td>
+                        <td>15.5%</td>
+                        <td>2.65e+02</td>
+                        <td>2.30e+02</td>
+                        <td>16.2%</td>
+                        <td>4.90e+00</td>
+                        <td>5.22e+00</td>
+                        <td>0</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_gt_depth_rgd_metric.html">P2001_gt_depth_rgd_metric</a></td>
+                        <td>634</td>
+                        <td>18.3</td>
+                        <td>6.2</td>
+                        <td>3.83e+02</td>
+                        <td>3.11e+02</td>
+                        <td>16.5%</td>
+                        <td>2.62e+02</td>
+                        <td>2.29e+02</td>
+                        <td>16.8%</td>
+                        <td>4.25e+00</td>
+                        <td>4.58e+00</td>
+                        <td>0</td>
+                        <td>179</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_gt_depth_sdi.html">P2001_gt_depth_sdi</a></td>
+                        <td>634</td>
+                        <td>18.1</td>
+                        <td>6.1</td>
+                        <td>3.92e+02</td>
+                        <td>3.29e+02</td>
+                        <td>16.1%</td>
+                        <td>2.69e+02</td>
+                        <td>2.37e+02</td>
+                        <td>16.6%</td>
+                        <td>4.47e+00</td>
+                        <td>4.75e+00</td>
+                        <td>0</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2001_outlier_opt.html">P2001_outlier_opt</a></td>
+                        <td>634</td>
+                        <td>17.5</td>
+                        <td>6.3</td>
+                        <td>3.68e+02</td>
+                        <td>2.98e+02</td>
+                        <td>17.8%</td>
+                        <td>2.49e+02</td>
+                        <td>2.18e+02</td>
+                        <td>15.4%</td>
+                        <td>4.26e+00</td>
+                        <td>4.46e+00</td>
+                        <td>0</td>
+                        <td>168</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_base.html">P2002_base</a></td>
+                        <td>628</td>
+                        <td>17.3</td>
+                        <td>6.7</td>
+                        <td>4.13e+02</td>
+                        <td>3.39e+02</td>
+                        <td>18.8%</td>
+                        <td>3.01e+02</td>
+                        <td>2.47e+02</td>
+                        <td>17.2%</td>
+                        <td>5.69e+00</td>
+                        <td>6.67e+00</td>
+                        <td>0</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_daac_depth_opt_w100.html">P2002_daac_depth_opt_w100</a></td>
+                        <td>628</td>
+                        <td>17.8</td>
+                        <td>6.7</td>
+                        <td>4.40e+02</td>
+                        <td>3.68e+02</td>
+                        <td>17.6%</td>
+                        <td>3.01e+02</td>
+                        <td>2.48e+02</td>
+                        <td>17.0%</td>
+                        <td>5.83e+00</td>
+                        <td>6.92e+00</td>
+                        <td>90</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_daac_rgd_inv.html">P2002_daac_rgd_inv</a></td>
+                        <td>628</td>
+                        <td>17.3</td>
+                        <td>6.6</td>
+                        <td>4.06e+02</td>
+                        <td>3.44e+02</td>
+                        <td>16.1%</td>
+                        <td>3.05e+02</td>
+                        <td>2.52e+02</td>
+                        <td>17.4%</td>
+                        <td>5.45e+00</td>
+                        <td>6.26e+00</td>
+                        <td>0</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_daac_rgd_metric.html">P2002_daac_rgd_metric</a></td>
+                        <td>628</td>
+                        <td>17.5</td>
+                        <td>6.7</td>
+                        <td>3.99e+02</td>
+                        <td>3.22e+02</td>
+                        <td>18.7%</td>
+                        <td>3.09e+02</td>
+                        <td>2.53e+02</td>
+                        <td>17.8%</td>
+                        <td>5.46e+00</td>
+                        <td>6.19e+00</td>
+                        <td>0</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_gt_depth_opt_w100.html">P2002_gt_depth_opt_w100</a></td>
+                        <td>628</td>
+                        <td>17.8</td>
+                        <td>6.7</td>
+                        <td>4.26e+02</td>
+                        <td>3.58e+02</td>
+                        <td>17.6%</td>
+                        <td>3.03e+02</td>
+                        <td>2.48e+02</td>
+                        <td>16.9%</td>
+                        <td>5.84e+00</td>
+                        <td>6.82e+00</td>
+                        <td>107</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_gt_depth_rgd_inverse.html">P2002_gt_depth_rgd_inverse</a></td>
+                        <td>628</td>
+                        <td>17.3</td>
+                        <td>6.6</td>
+                        <td>3.97e+02</td>
+                        <td>3.25e+02</td>
+                        <td>18.4%</td>
+                        <td>3.06e+02</td>
+                        <td>2.51e+02</td>
+                        <td>17.7%</td>
+                        <td>6.01e+00</td>
+                        <td>6.97e+00</td>
+                        <td>0</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_gt_depth_rgd_metric.html">P2002_gt_depth_rgd_metric</a></td>
+                        <td>628</td>
+                        <td>17.3</td>
+                        <td>6.7</td>
+                        <td>4.33e+02</td>
+                        <td>3.44e+02</td>
+                        <td>20.0%</td>
+                        <td>3.04e+02</td>
+                        <td>2.52e+02</td>
+                        <td>17.2%</td>
+                        <td>6.14e+00</td>
+                        <td>6.98e+00</td>
+                        <td>0</td>
+                        <td>166</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2002_gt_depth_sdi.html">P2002_gt_depth_sdi</a></td>
+                        <td>628</td>
+                        <td>17.3</td>
+                        <td>6.7</td>
+                        <td>4.13e+02</td>
+                        <td>3.39e+02</td>
+                        <td>18.8%</td>
+                        <td>3.01e+02</td>
+                        <td>2.47e+02</td>
+                        <td>17.2%</td>
+                        <td>5.69e+00</td>
+                        <td>6.67e+00</td>
+                        <td>0</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_base.html">P2003_base</a></td>
+                        <td>635</td>
+                        <td>18.2</td>
+                        <td>6.5</td>
+                        <td>5.07e+02</td>
+                        <td>4.51e+02</td>
+                        <td>12.4%</td>
+                        <td>3.27e+02</td>
+                        <td>2.76e+02</td>
+                        <td>13.1%</td>
+                        <td>6.25e+00</td>
+                        <td>6.87e+00</td>
+                        <td>0</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_daac_depth_opt_w100.html">P2003_daac_depth_opt_w100</a></td>
+                        <td>635</td>
+                        <td>18.8</td>
+                        <td>6.5</td>
+                        <td>5.21e+02</td>
+                        <td>4.73e+02</td>
+                        <td>11.3%</td>
+                        <td>3.27e+02</td>
+                        <td>2.77e+02</td>
+                        <td>13.0%</td>
+                        <td>6.38e+00</td>
+                        <td>7.01e+00</td>
+                        <td>81</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_daac_rgd_inv.html">P2003_daac_rgd_inv</a></td>
+                        <td>635</td>
+                        <td>18.4</td>
+                        <td>6.7</td>
+                        <td>5.29e+02</td>
+                        <td>4.46e+02</td>
+                        <td>16.6%</td>
+                        <td>3.17e+02</td>
+                        <td>2.73e+02</td>
+                        <td>12.9%</td>
+                        <td>6.03e+00</td>
+                        <td>6.62e+00</td>
+                        <td>0</td>
+                        <td>175</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_daac_rgd_metric.html">P2003_daac_rgd_metric</a></td>
+                        <td>635</td>
+                        <td>18.3</td>
+                        <td>6.5</td>
+                        <td>5.41e+02</td>
+                        <td>4.51e+02</td>
+                        <td>17.5%</td>
+                        <td>3.27e+02</td>
+                        <td>2.74e+02</td>
+                        <td>13.8%</td>
+                        <td>5.90e+00</td>
+                        <td>6.57e+00</td>
+                        <td>0</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_gt_depth_opt_w100.html">P2003_gt_depth_opt_w100</a></td>
+                        <td>635</td>
+                        <td>18.6</td>
+                        <td>6.5</td>
+                        <td>5.06e+02</td>
+                        <td>4.65e+02</td>
+                        <td>10.5%</td>
+                        <td>3.27e+02</td>
+                        <td>2.77e+02</td>
+                        <td>13.1%</td>
+                        <td>6.23e+00</td>
+                        <td>6.89e+00</td>
+                        <td>71</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_gt_depth_rgd_inverse.html">P2003_gt_depth_rgd_inverse</a></td>
+                        <td>635</td>
+                        <td>18.3</td>
+                        <td>6.6</td>
+                        <td>5.49e+02</td>
+                        <td>4.66e+02</td>
+                        <td>16.7%</td>
+                        <td>3.32e+02</td>
+                        <td>2.86e+02</td>
+                        <td>12.9%</td>
+                        <td>6.46e+00</td>
+                        <td>7.05e+00</td>
+                        <td>0</td>
+                        <td>175</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_gt_depth_rgd_metric.html">P2003_gt_depth_rgd_metric</a></td>
+                        <td>635</td>
+                        <td>18.6</td>
+                        <td>6.6</td>
+                        <td>4.93e+02</td>
+                        <td>4.33e+02</td>
+                        <td>12.8%</td>
+                        <td>3.26e+02</td>
+                        <td>2.82e+02</td>
+                        <td>13.2%</td>
+                        <td>6.34e+00</td>
+                        <td>6.98e+00</td>
+                        <td>0</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2003_gt_depth_sdi.html">P2003_gt_depth_sdi</a></td>
+                        <td>635</td>
+                        <td>18.3</td>
+                        <td>6.5</td>
+                        <td>5.07e+02</td>
+                        <td>4.51e+02</td>
+                        <td>12.4%</td>
+                        <td>3.27e+02</td>
+                        <td>2.76e+02</td>
+                        <td>13.1%</td>
+                        <td>6.25e+00</td>
+                        <td>6.87e+00</td>
+                        <td>0</td>
+                        <td>176</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_base.html">P2004_base</a></td>
+                        <td>626</td>
+                        <td>17.2</td>
+                        <td>6.8</td>
+                        <td>5.50e+02</td>
+                        <td>3.62e+02</td>
+                        <td>32.7%</td>
+                        <td>2.53e+02</td>
+                        <td>1.98e+02</td>
+                        <td>20.5%</td>
+                        <td>4.61e+00</td>
+                        <td>5.15e+00</td>
+                        <td>0</td>
+                        <td>164</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_daac_depth_opt_w100.html">P2004_daac_depth_opt_w100</a></td>
+                        <td>625</td>
+                        <td>17.9</td>
+                        <td>6.9</td>
+                        <td>5.95e+02</td>
+                        <td>3.84e+02</td>
+                        <td>33.8%</td>
+                        <td>2.55e+02</td>
+                        <td>2.02e+02</td>
+                        <td>19.9%</td>
+                        <td>4.63e+00</td>
+                        <td>5.10e+00</td>
+                        <td>98</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_daac_rgd_inv.html">P2004_daac_rgd_inv</a></td>
+                        <td>626</td>
+                        <td>17.3</td>
+                        <td>6.9</td>
+                        <td>5.83e+02</td>
+                        <td>3.32e+02</td>
+                        <td>42.3%</td>
+                        <td>2.51e+02</td>
+                        <td>1.99e+02</td>
+                        <td>20.5%</td>
+                        <td>4.58e+00</td>
+                        <td>5.30e+00</td>
+                        <td>0</td>
+                        <td>163</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_daac_rgd_metric.html">P2004_daac_rgd_metric</a></td>
+                        <td>626</td>
+                        <td>17.0</td>
+                        <td>6.8</td>
+                        <td>5.36e+02</td>
+                        <td>3.63e+02</td>
+                        <td>31.1%</td>
+                        <td>2.62e+02</td>
+                        <td>2.08e+02</td>
+                        <td>21.2%</td>
+                        <td>5.55e+00</td>
+                        <td>6.39e+00</td>
+                        <td>0</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_gt_depth_opt_w100.html">P2004_gt_depth_opt_w100</a></td>
+                        <td>625</td>
+                        <td>17.9</td>
+                        <td>6.9</td>
+                        <td>5.57e+02</td>
+                        <td>3.72e+02</td>
+                        <td>32.0%</td>
+                        <td>2.55e+02</td>
+                        <td>2.00e+02</td>
+                        <td>20.0%</td>
+                        <td>4.60e+00</td>
+                        <td>5.12e+00</td>
+                        <td>117</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_gt_depth_rgd_inverse.html">P2004_gt_depth_rgd_inverse</a></td>
+                        <td>626</td>
+                        <td>17.4</td>
+                        <td>6.8</td>
+                        <td>4.86e+02</td>
+                        <td>3.04e+02</td>
+                        <td>34.8%</td>
+                        <td>2.53e+02</td>
+                        <td>2.04e+02</td>
+                        <td>20.3%</td>
+                        <td>4.51e+00</td>
+                        <td>5.21e+00</td>
+                        <td>0</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_gt_depth_rgd_metric.html">P2004_gt_depth_rgd_metric</a></td>
+                        <td>536</td>
+                        <td>16.5</td>
+                        <td>6.7</td>
+                        <td>4.90e+02</td>
+                        <td>3.66e+02</td>
+                        <td>25.3%</td>
+                        <td>2.59e+02</td>
+                        <td>2.01e+02</td>
+                        <td>20.8%</td>
+                        <td>5.55e+00</td>
+                        <td>6.31e+00</td>
+                        <td>0</td>
+                        <td>161</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2004_gt_depth_sdi.html">P2004_gt_depth_sdi</a></td>
+                        <td>626</td>
+                        <td>17.3</td>
+                        <td>6.8</td>
+                        <td>5.50e+02</td>
+                        <td>3.62e+02</td>
+                        <td>32.7%</td>
+                        <td>2.53e+02</td>
+                        <td>1.98e+02</td>
+                        <td>20.5%</td>
+                        <td>4.61e+00</td>
+                        <td>5.15e+00</td>
+                        <td>0</td>
+                        <td>164</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_base.html">P2005_base</a></td>
+                        <td>631</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>6.15e+02</td>
+                        <td>5.35e+02</td>
+                        <td>15.4%</td>
+                        <td>2.72e+02</td>
+                        <td>2.11e+02</td>
+                        <td>23.8%</td>
+                        <td>4.61e+00</td>
+                        <td>5.45e+00</td>
+                        <td>0</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_daac_depth_opt_w100.html">P2005_daac_depth_opt_w100</a></td>
+                        <td>631</td>
+                        <td>17.8</td>
+                        <td>6.7</td>
+                        <td>6.84e+02</td>
+                        <td>5.61e+02</td>
+                        <td>18.8%</td>
+                        <td>2.70e+02</td>
+                        <td>2.12e+02</td>
+                        <td>22.9%</td>
+                        <td>4.66e+00</td>
+                        <td>5.40e+00</td>
+                        <td>97</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_daac_rgd_inv.html">P2005_daac_rgd_inv</a></td>
+                        <td>631</td>
+                        <td>16.7</td>
+                        <td>6.6</td>
+                        <td>6.12e+02</td>
+                        <td>4.92e+02</td>
+                        <td>19.1%</td>
+                        <td>2.77e+02</td>
+                        <td>2.05e+02</td>
+                        <td>23.6%</td>
+                        <td>4.45e+00</td>
+                        <td>5.12e+00</td>
+                        <td>0</td>
+                        <td>158</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_daac_rgd_metric.html">P2005_daac_rgd_metric</a></td>
+                        <td>631</td>
+                        <td>16.8</td>
+                        <td>6.6</td>
+                        <td>6.04e+02</td>
+                        <td>4.60e+02</td>
+                        <td>19.4%</td>
+                        <td>2.80e+02</td>
+                        <td>2.06e+02</td>
+                        <td>24.5%</td>
+                        <td>5.36e+00</td>
+                        <td>6.31e+00</td>
+                        <td>0</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_gt_depth_opt_w100.html">P2005_gt_depth_opt_w100</a></td>
+                        <td>631</td>
+                        <td>17.0</td>
+                        <td>6.8</td>
+                        <td>7.02e+02</td>
+                        <td>5.47e+02</td>
+                        <td>21.0%</td>
+                        <td>2.70e+02</td>
+                        <td>2.13e+02</td>
+                        <td>23.1%</td>
+                        <td>4.58e+00</td>
+                        <td>5.34e+00</td>
+                        <td>97</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_gt_depth_rgd_inverse.html">P2005_gt_depth_rgd_inverse</a></td>
+                        <td>631</td>
+                        <td>17.0</td>
+                        <td>6.7</td>
+                        <td>6.68e+02</td>
+                        <td>5.21e+02</td>
+                        <td>21.2%</td>
+                        <td>2.78e+02</td>
+                        <td>2.13e+02</td>
+                        <td>24.6%</td>
+                        <td>5.10e+00</td>
+                        <td>5.92e+00</td>
+                        <td>0</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_gt_depth_rgd_metric.html">P2005_gt_depth_rgd_metric</a></td>
+                        <td>631</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>6.09e+02</td>
+                        <td>4.74e+02</td>
+                        <td>19.5%</td>
+                        <td>2.75e+02</td>
+                        <td>2.12e+02</td>
+                        <td>23.7%</td>
+                        <td>5.12e+00</td>
+                        <td>5.95e+00</td>
+                        <td>0</td>
+                        <td>158</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2005_gt_depth_sdi.html">P2005_gt_depth_sdi</a></td>
+                        <td>631</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>6.15e+02</td>
+                        <td>5.35e+02</td>
+                        <td>15.4%</td>
+                        <td>2.72e+02</td>
+                        <td>2.11e+02</td>
+                        <td>23.8%</td>
+                        <td>4.61e+00</td>
+                        <td>5.45e+00</td>
+                        <td>0</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_base.html">P2006_base</a></td>
+                        <td>634</td>
+                        <td>16.8</td>
+                        <td>6.6</td>
+                        <td>4.01e+02</td>
+                        <td>3.43e+02</td>
+                        <td>14.8%</td>
+                        <td>3.18e+02</td>
+                        <td>2.59e+02</td>
+                        <td>17.2%</td>
+                        <td>7.38e+00</td>
+                        <td>8.19e+00</td>
+                        <td>0</td>
+                        <td>163</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_daac_depth_opt_w100.html">P2006_daac_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>4.29e+02</td>
+                        <td>3.64e+02</td>
+                        <td>14.4%</td>
+                        <td>3.16e+02</td>
+                        <td>2.60e+02</td>
+                        <td>17.0%</td>
+                        <td>7.13e+00</td>
+                        <td>7.94e+00</td>
+                        <td>93</td>
+                        <td>163</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_daac_rgd_inv.html">P2006_daac_rgd_inv</a></td>
+                        <td>634</td>
+                        <td>16.5</td>
+                        <td>6.6</td>
+                        <td>4.14e+02</td>
+                        <td>3.51e+02</td>
+                        <td>15.7%</td>
+                        <td>3.31e+02</td>
+                        <td>2.68e+02</td>
+                        <td>18.1%</td>
+                        <td>6.97e+00</td>
+                        <td>7.70e+00</td>
+                        <td>0</td>
+                        <td>162</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_daac_rgd_metric.html">P2006_daac_rgd_metric</a></td>
+                        <td>634</td>
+                        <td>16.4</td>
+                        <td>6.5</td>
+                        <td>3.98e+02</td>
+                        <td>3.35e+02</td>
+                        <td>16.1%</td>
+                        <td>3.22e+02</td>
+                        <td>2.66e+02</td>
+                        <td>17.8%</td>
+                        <td>7.63e+00</td>
+                        <td>8.28e+00</td>
+                        <td>0</td>
+                        <td>162</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_gt_depth_opt_w100.html">P2006_gt_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>4.14e+02</td>
+                        <td>3.54e+02</td>
+                        <td>14.1%</td>
+                        <td>3.19e+02</td>
+                        <td>2.60e+02</td>
+                        <td>17.1%</td>
+                        <td>7.14e+00</td>
+                        <td>7.90e+00</td>
+                        <td>115</td>
+                        <td>163</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_gt_depth_rgd_inverse.html">P2006_gt_depth_rgd_inverse</a></td>
+                        <td>634</td>
+                        <td>16.1</td>
+                        <td>6.5</td>
+                        <td>3.96e+02</td>
+                        <td>3.40e+02</td>
+                        <td>15.2%</td>
+                        <td>3.19e+02</td>
+                        <td>2.61e+02</td>
+                        <td>17.9%</td>
+                        <td>6.75e+00</td>
+                        <td>7.53e+00</td>
+                        <td>0</td>
+                        <td>159</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_gt_depth_rgd_metric.html">P2006_gt_depth_rgd_metric</a></td>
+                        <td>634</td>
+                        <td>16.4</td>
+                        <td>6.6</td>
+                        <td>4.04e+02</td>
+                        <td>3.43e+02</td>
+                        <td>15.4%</td>
+                        <td>3.20e+02</td>
+                        <td>2.73e+02</td>
+                        <td>17.9%</td>
+                        <td>8.17e+00</td>
+                        <td>8.71e+00</td>
+                        <td>0</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2006_gt_depth_sdi.html">P2006_gt_depth_sdi</a></td>
+                        <td>634</td>
+                        <td>16.6</td>
+                        <td>6.6</td>
+                        <td>4.01e+02</td>
+                        <td>3.43e+02</td>
+                        <td>14.8%</td>
+                        <td>3.18e+02</td>
+                        <td>2.59e+02</td>
+                        <td>17.2%</td>
+                        <td>7.38e+00</td>
+                        <td>8.19e+00</td>
+                        <td>0</td>
+                        <td>163</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_base.html">P2007_base</a></td>
+                        <td>623</td>
+                        <td>5.7</td>
+                        <td>6.6</td>
+                        <td>2.00e+09</td>
+                        <td>1.60e+09</td>
+                        <td>21.1%</td>
+                        <td>4.56e+04</td>
+                        <td>4.48e+04</td>
+                        <td>-37.2%</td>
+                        <td>8.72e+06</td>
+                        <td>4.04e+07</td>
+                        <td>0</td>
+                        <td>57</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_daac_depth_opt_w100.html">P2007_daac_depth_opt_w100</a></td>
+                        <td>623</td>
+                        <td>18.4</td>
+                        <td>6.8</td>
+                        <td>4.68e+02</td>
+                        <td>4.00e+02</td>
+                        <td>17.0%</td>
+                        <td>2.38e+02</td>
+                        <td>1.83e+02</td>
+                        <td>23.7%</td>
+                        <td>3.40e+00</td>
+                        <td>3.91e+00</td>
+                        <td>97</td>
+                        <td>166</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_daac_rgd_inv.html">P2007_daac_rgd_inv</a></td>
+                        <td>623</td>
+                        <td>17.0</td>
+                        <td>6.6</td>
+                        <td>3.56e+02</td>
+                        <td>2.74e+02</td>
+                        <td>22.1%</td>
+                        <td>2.35e+02</td>
+                        <td>1.82e+02</td>
+                        <td>22.0%</td>
+                        <td>4.73e+00</td>
+                        <td>5.26e+00</td>
+                        <td>0</td>
+                        <td>158</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_daac_rgd_metric.html">P2007_daac_rgd_metric</a></td>
+                        <td>623</td>
+                        <td>17.6</td>
+                        <td>6.6</td>
+                        <td>4.85e+02</td>
+                        <td>4.11e+02</td>
+                        <td>18.4%</td>
+                        <td>2.40e+02</td>
+                        <td>1.81e+02</td>
+                        <td>24.8%</td>
+                        <td>4.00e+00</td>
+                        <td>4.60e+00</td>
+                        <td>0</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_gt_depth_opt_w100.html">P2007_gt_depth_opt_w100</a></td>
+                        <td>623</td>
+                        <td>18.4</td>
+                        <td>6.7</td>
+                        <td>4.50e+02</td>
+                        <td>3.92e+02</td>
+                        <td>15.5%</td>
+                        <td>2.37e+02</td>
+                        <td>1.83e+02</td>
+                        <td>23.3%</td>
+                        <td>3.43e+00</td>
+                        <td>4.00e+00</td>
+                        <td>129</td>
+                        <td>167</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_gt_depth_rgd_inverse.html">P2007_gt_depth_rgd_inverse</a></td>
+                        <td>623</td>
+                        <td>17.7</td>
+                        <td>6.6</td>
+                        <td>3.60e+02</td>
+                        <td>3.02e+02</td>
+                        <td>19.0%</td>
+                        <td>2.41e+02</td>
+                        <td>1.79e+02</td>
+                        <td>24.9%</td>
+                        <td>3.76e+00</td>
+                        <td>4.28e+00</td>
+                        <td>0</td>
+                        <td>165</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_gt_depth_rgd_metric.html">P2007_gt_depth_rgd_metric</a></td>
+                        <td>623</td>
+                        <td>17.5</td>
+                        <td>6.5</td>
+                        <td>4.31e+02</td>
+                        <td>3.73e+02</td>
+                        <td>16.6%</td>
+                        <td>2.36e+02</td>
+                        <td>1.80e+02</td>
+                        <td>23.9%</td>
+                        <td>3.99e+00</td>
+                        <td>4.53e+00</td>
+                        <td>0</td>
+                        <td>166</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2007_gt_depth_sdi.html">P2007_gt_depth_sdi</a></td>
+                        <td>623</td>
+                        <td>17.8</td>
+                        <td>6.7</td>
+                        <td>4.56e+02</td>
+                        <td>3.71e+02</td>
+                        <td>20.5%</td>
+                        <td>2.39e+02</td>
+                        <td>1.82e+02</td>
+                        <td>25.1%</td>
+                        <td>3.48e+00</td>
+                        <td>3.98e+00</td>
+                        <td>0</td>
+                        <td>166</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_base.html">P2008_base</a></td>
+                        <td>634</td>
+                        <td>16.6</td>
+                        <td>6.7</td>
+                        <td>5.25e+02</td>
+                        <td>3.90e+02</td>
+                        <td>26.9%</td>
+                        <td>2.78e+02</td>
+                        <td>2.41e+02</td>
+                        <td>19.1%</td>
+                        <td>4.90e+00</td>
+                        <td>5.82e+00</td>
+                        <td>0</td>
+                        <td>156</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_daac_depth_opt_w100.html">P2008_daac_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>17.1</td>
+                        <td>6.7</td>
+                        <td>5.28e+02</td>
+                        <td>4.14e+02</td>
+                        <td>24.5%</td>
+                        <td>2.85e+02</td>
+                        <td>2.45e+02</td>
+                        <td>18.7%</td>
+                        <td>4.83e+00</td>
+                        <td>5.54e+00</td>
+                        <td>83</td>
+                        <td>157</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_daac_rgd_inv.html">P2008_daac_rgd_inv</a></td>
+                        <td>634</td>
+                        <td>16.4</td>
+                        <td>6.7</td>
+                        <td>5.31e+02</td>
+                        <td>3.90e+02</td>
+                        <td>27.7%</td>
+                        <td>2.82e+02</td>
+                        <td>2.35e+02</td>
+                        <td>18.8%</td>
+                        <td>4.90e+00</td>
+                        <td>5.57e+00</td>
+                        <td>0</td>
+                        <td>153</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_daac_rgd_metric.html">P2008_daac_rgd_metric</a></td>
+                        <td>582</td>
+                        <td>15.8</td>
+                        <td>6.7</td>
+                        <td>5.10e+02</td>
+                        <td>3.79e+02</td>
+                        <td>26.9%</td>
+                        <td>2.78e+02</td>
+                        <td>2.21e+02</td>
+                        <td>20.7%</td>
+                        <td>4.72e+00</td>
+                        <td>5.38e+00</td>
+                        <td>0</td>
+                        <td>148</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_gt_depth_opt_w100.html">P2008_gt_depth_opt_w100</a></td>
+                        <td>634</td>
+                        <td>17.2</td>
+                        <td>6.8</td>
+                        <td>5.34e+02</td>
+                        <td>4.09e+02</td>
+                        <td>25.6%</td>
+                        <td>2.83e+02</td>
+                        <td>2.44e+02</td>
+                        <td>18.5%</td>
+                        <td>4.81e+00</td>
+                        <td>5.59e+00</td>
+                        <td>105</td>
+                        <td>157</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_gt_depth_rgd_inverse.html">P2008_gt_depth_rgd_inverse</a></td>
+                        <td>634</td>
+                        <td>16.5</td>
+                        <td>6.7</td>
+                        <td>5.00e+02</td>
+                        <td>3.82e+02</td>
+                        <td>24.5%</td>
+                        <td>2.83e+02</td>
+                        <td>2.34e+02</td>
+                        <td>19.5%</td>
+                        <td>4.53e+00</td>
+                        <td>5.08e+00</td>
+                        <td>0</td>
+                        <td>155</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_gt_depth_rgd_metric.html">P2008_gt_depth_rgd_metric</a></td>
+                        <td>634</td>
+                        <td>16.5</td>
+                        <td>6.7</td>
+                        <td>4.85e+02</td>
+                        <td>3.85e+02</td>
+                        <td>23.9%</td>
+                        <td>2.89e+02</td>
+                        <td>2.40e+02</td>
+                        <td>19.4%</td>
+                        <td>4.51e+00</td>
+                        <td>5.08e+00</td>
+                        <td>0</td>
+                        <td>154</td>
+                    </tr>
+                    <tr>
+                        <td><a href="P2008_gt_depth_sdi.html">P2008_gt_depth_sdi</a></td>
+                        <td>634</td>
+                        <td>16.7</td>
+                        <td>6.7</td>
+                        <td>5.25e+02</td>
+                        <td>3.90e+02</td>
+                        <td>26.9%</td>
+                        <td>2.78e+02</td>
+                        <td>2.41e+02</td>
+                        <td>19.1%</td>
+                        <td>4.90e+00</td>
+                        <td>5.82e+00</td>
+                        <td>0</td>
+                        <td>156</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
